@@ -10,7 +10,7 @@
         <?php include '../view/header.php'; ?>
         <main>
             <?php
-                require('../model/database.php');
+                require('../model/database_oo.php');
                 $db = Database::getDB();
                 // require('../model/product_db.php');
                 $query = 'SELECT * FROM technicians;';
