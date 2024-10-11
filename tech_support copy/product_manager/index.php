@@ -11,6 +11,7 @@
         <main>
             <?php
                 require('../model/database.php');
+                $db = Database::getDB();
                 // require('../model/product_db.php');
 
                 $query = 'SELECT * FROM products;';                
