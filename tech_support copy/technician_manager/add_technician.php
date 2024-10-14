@@ -16,24 +16,26 @@
          <h2>Add Technician</h2>
          <div>
             <form method="post" id="add_technician">
-            <div id="technician">
-            <label>Tech ID:</label>
-            <input type="text" name="techId" /><br />
+               <div id="technician">
+                  <label>Tech ID:</label>
+                  <input type="text" name="techId" placeholder="e.g., TECH001"/><br />
 
-            <label>First Name:</label>
-            <input type="text" name="firstName" /><br />
+                  <label>First Name:</label>
+                  <input type="text" name="firstName" placeholder="e.g., John"/><br />
 
-            <label>Last Name:</label>
-            <input type="text" name="lastName" /><br />
+                  <label>Last Name:</label>
+                  <input type="text" name="lastName" placeholder="e.g., Doe"/><br />
 
-            <label>Email:</label>
-            <input type="text" name="email" /><br />
+                  <label>Email:</label>
+                  <input type="email" name="email" placeholder="e.g., john.doe@example.com"/><br />
 
-            <label>Phone:</label>
-            <input type="text" name="phone" /><br />
+                  <label>Phone:</label>
+                  <input type="text" name="phone" placeholder="e.g., 123-456-7890"/><br />
 
-            <label>Password:</label>
-            <input type="text" name="password" /><br />
+                  <label>Password:</label>
+                  <input type="password" name="password" placeholder="e.g., ********"/><br />
+               </div>
+            </form>
          </div>
 
          <div id="buttons">

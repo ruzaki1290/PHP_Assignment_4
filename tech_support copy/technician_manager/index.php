@@ -11,38 +11,47 @@
         <main>
             <?php
                 require('../model/database_oo.php');
+                require_once('../technician_manager/technician.php');
                 $db = Database::getDB();
                 // require('../model/product_db.php');
                 $query = 'SELECT * FROM technicians;';
                 // processes to the database
                 $statement = $db->prepare($query);
                 $statement->execute();
-                $technicians = $statement->fetchAll();  
+                $technicians = $statement->fetchAll(PDO::FETCH_ASSOC);  
             ?>
             <table>
                 <tr>
                     <th>Tech ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Full Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Password</th>
                     <th></th>
                 </tr>
                 <?php
-                    foreach($technicians as $technician) {
+                    foreach($technicians as $technicianData) {
                         echo'<tr>';
+                        // creates a Technician object
+                        $technician = new Technician(
+                            $technicianData['techID'],
+                            $technicianData['firstName'],
+                            $technicianData['lastName'],
+                            $technicianData['email'],
+                            $technicianData['phone'],
+                            $technicianData['password']
+                        );
 
-                        echo '<td>'.$technician['techID'].'</td>';
-                        echo '<td>'.$technician['firstName'].'</td>';
-                        echo '<td>'.$technician['lastName'].'</td>';
-                        echo '<td>'.$technician['email'].'</td>';
-                        echo '<td>'.$technician['phone'].'</td>';
-                        echo '<td>'.$technician['password'].'</td>';
+                        echo '<tr>';
+                        echo '<td>'.$technician->getTechID().'</td>';
+                        echo '<td>'.$technician->getFullName().'</td>';
+                        echo '<td>'.$technician->getEmail().'</td>';
+                        echo '<td>'.$technician->getPhone().'</td>';
+                        echo '<td>'.$technician->getPassword().'</td>';
                         echo '
                         <td>
                             <form method="post" action="delete_technician.php">
-                                <input type="hidden" name="techID" value="'.$technician['techID'].'">
+                                <input type="hidden" name="techID" value="'.$technician->getTechID().'">
                                 <button>Delete</button>
                             </form>
                         </td>';
