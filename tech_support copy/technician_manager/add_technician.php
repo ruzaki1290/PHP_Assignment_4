@@ -18,29 +18,27 @@
             <form method="post" id="add_technician">
                <div id="technician">
                   <label>Tech ID:</label>
-                  <input type="text" name="techId" placeholder="e.g., TECH001"/><br />
+                  <input type="text" name="techId"/><br />
 
                   <label>First Name:</label>
-                  <input type="text" name="firstName" placeholder="e.g., John"/><br />
+                  <input type="text" name="firstName"/><br />
 
                   <label>Last Name:</label>
-                  <input type="text" name="lastName" placeholder="e.g., Doe"/><br />
+                  <input type="text" name="lastName"/><br />
 
                   <label>Email:</label>
-                  <input type="email" name="email" placeholder="e.g., john.doe@example.com"/><br />
+                  <input type="email" name="email"/><br />
 
                   <label>Phone:</label>
-                  <input type="text" name="phone" placeholder="e.g., 123-456-7890"/><br />
+                  <input type="text" name="phone"/><br />
 
                   <label>Password:</label>
-                  <input type="password" name="password" placeholder="e.g., ********"/><br />
+                  <input type="password" name="password"/><br />
                </div>
-            </form>
-         </div>
-
-         <div id="buttons">
-            <label>&nbsp;</label>
-            <input type="submit" value="Save Technician" /><br />
+               <div id="buttons">
+                  <label>&nbsp;</label>
+                  <input type="submit" value="Save Technician" /><br />
+               </div>
          </div>
 
          </form>
@@ -49,8 +47,8 @@
       </main>
       <?php
          if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            require_once('../model/database_oo.php');
             require_once('../technician_manager/technician.php');
+            require_once('../technician_manager/technician_db_oo.php');
             var_dump($_POST);
 
             $techId = $_POST['techId'];
@@ -83,26 +81,8 @@
                      
             try {
                // get the database connection
-               $db = Database::getDB();
+               TechnicianDB::addTechnician($technician);
 
-               // add the technician to the database
-               $query = 'INSERT INTO technicians
-                  (techId, firstName, lastName, email, phone, password)
-                  VALUES
-                  (:techId, :firstName, :lastName, :email, :phone, :password)';
-               
-               $statement = $db->prepare($query);
-               $statement->bindValue(':techId', $technician->getTechID());
-               $statement->bindValue(':firstName', $technician->getFirstName());
-               $statement->bindValue(':lastName', $technician->getLastName());
-               $statement->bindValue(':email', $technician->getEmail());
-               $statement->bindValue(':phone', $technician->getPhone());
-               $statement->bindValue(':password', $technician->getPassword());
-
-               // execute the statement
-               $statement->execute();
-               // close the cursor
-               $statement->closeCursor();
                // redirect to technician list
                header("Location: index.php");
                exit;

@@ -10,15 +10,13 @@
         <?php include '../view/header.php'; ?>
         <main>
             <?php
-                require('../model/database_oo.php');
-                require_once('../technician_manager/technician.php');
-                $db = Database::getDB();
-                // require('../model/product_db.php');
-                $query = 'SELECT * FROM technicians;';
-                // processes to the database
-                $statement = $db->prepare($query);
-                $statement->execute();
-                $technicians = $statement->fetchAll(PDO::FETCH_ASSOC);  
+                ini_set('display_errors', 1);
+                ini_set('display_startup_errors', 1);
+                error_reporting(E_ALL);
+                require_once('../technician_manager/technician_db_oo.php');
+
+                // retrieves all technicians using the TechnicianDB class
+                $technicians = TechnicianDB::getTechnicians();  
             ?>
             <table>
                 <tr>
@@ -30,17 +28,7 @@
                     <th></th>
                 </tr>
                 <?php
-                    foreach($technicians as $technicianData) {
-                        echo'<tr>';
-                        // creates a Technician object
-                        $technician = new Technician(
-                            $technicianData['techID'],
-                            $technicianData['firstName'],
-                            $technicianData['lastName'],
-                            $technicianData['email'],
-                            $technicianData['phone'],
-                            $technicianData['password']
-                        );
+                    foreach($technicians as $technician) {
 
                         echo '<tr>';
                         echo '<td>'.$technician->getTechID().'</td>';

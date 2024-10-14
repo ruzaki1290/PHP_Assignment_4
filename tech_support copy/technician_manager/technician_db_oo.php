@@ -1,5 +1,5 @@
 <?php
-   require_once('database_oo.php');
+   require_once('../model/database_oo.php');
    require_once('technician.php');
 
    class TechnicianDB {
@@ -22,7 +22,7 @@
 
       public static function getTechnicians() {
          $db = Database::getDB();
-         $query = 'SELECT + FROM technicians';
+         $query = 'SELECT techID, firstName, lastName, email, phone, password FROM technicians';
          $statement = $db->prepare($query);
         $statement->execute();
         $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
