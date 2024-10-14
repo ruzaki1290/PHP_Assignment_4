@@ -47,7 +47,8 @@
       </main>
       <?php
          if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            require_once('../model/database.php');
+            require_once('../model/database_oo.php');
+            require_once('../technician_manager/technician.php');
             var_dump($_POST);
 
             $techId = $_POST['techId'];
@@ -57,21 +58,18 @@
             $phone = $_POST['phone'];
             $password = $_POST['password'];
 
-            // validate form data CHANGED TO SWITCH STATEMENTS
-            /*
-            if (empty($techId) || empty($firstName) || empty($lastName) || empty($email) || empty($phone) || empty($password)) {
-               echo "All fields are required.";
-               exit;
-            }
-            */
+            // creates a Technician object
+            $technician = new Technician($techId, $firstName, $lastName, $email, $phone, $password);
+            
+            // validates form data
             $isValid = true;
             switch (true) {
-               case empty($techId);
-               case empty($firstName);
-               case empty($lastName);
-               case empty($techId);
-               case empty($email);
-               case empty($password);
+               case empty($technician->getTechID());
+               case empty($technician->getFirstName());
+               case empty($technician->getLastName());
+               case empty($technician->getEmail());
+               case empty($technician->getPhone());
+               case empty($technician->getPassword());
                   $isValid = false;
                   break;
             }
@@ -82,6 +80,9 @@
             }
                      
             try {
+               // get the database connection
+               $db = Database::getDB();
+
                // add the technician to the database
                $query = 'INSERT INTO technicians
                   (techId, firstName, lastName, email, phone, password)
@@ -89,12 +90,12 @@
                   (:techId, :firstName, :lastName, :email, :phone, :password)';
                
                $statement = $db->prepare($query);
-               $statement->bindValue(':techId', $techId);
-               $statement->bindValue(':firstName', $firstName);
-               $statement->bindValue(':lastName', $lastName);
-               $statement->bindValue(':email', $email);
-               $statement->bindValue(':phone', $phone);
-               $statement->bindValue(':password', $password);
+               $statement->bindValue(':techId', $technician->getTechID());
+               $statement->bindValue(':firstName', $technician->getFirstName());
+               $statement->bindValue(':lastName', $technician->getLastName());
+               $statement->bindValue(':email', $technician->getEmail());
+               $statement->bindValue(':phone', $technician->getPhone());
+               $statement->bindValue(':password', $technician->getPassword());
 
                // execute the statement
                $statement->execute();
